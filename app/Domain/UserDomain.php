@@ -16,7 +16,7 @@ class UserDomain
 
 
     public function canDeleteUser(User $user){
-        return $user::__get('role') === 'admin';
+        return $user::__get('role') === 'user' && request()->user()->role;
     }
 
 }

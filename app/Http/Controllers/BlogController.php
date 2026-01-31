@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Services\BlogServices;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
+    private BlogServices $blogService;
+
+    public function __construct(BlogServices $service){
+        $this->blogService = $service;
+    }
     /**
      * Display a listing of the resource.
      */
@@ -20,7 +26,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -28,7 +34,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->blogService->createBlog($request->all());
     }
 
     /**

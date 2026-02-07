@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Models;
 
 use Exception;
@@ -8,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    /** @use HasFactory<\Database\Factories\BlogFactory> */
     use HasFactory;
+
     protected $fillable = [
         'title',
         'discription',
@@ -18,11 +17,24 @@ class Blog extends Model
         'status',
     ];
 
-    public function publish(array $data){
-        if(empty($data['title'] ) && empty($data['discription']) && empty($data['user_id'] ) ){throw new Exception('Cannot create blog');};
+    /**
+     * Publish a new blog
+     */
+    public function publish(array $data)
+    {
+        if (empty($data['title']) || empty($data['discription']) || empty($data['user_id'])) {
+            throw new Exception('Cannot create blog. Missing required fields.');
+        }
 
-        Blog::create($data);
+        return self::create($data);
     }
 
-    
+    /**
+     * Blog author relationship
+     */
+    public function user()
+    {
+        // child (blog) belongs to parent (user)
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

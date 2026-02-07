@@ -19,6 +19,11 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth', 'verified'])->group(function (){
     Route::resource('/blog', BlogController::class );
+
+    Route::get('/blogs/personal', [BlogController::class, 'personal'])
+    ->name('blog.personal');
 });
+
+
 
 require __DIR__.'/auth.php';

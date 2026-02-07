@@ -13,9 +13,15 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.index')">
-                        {{ __('Blogs') }}
+                        {{ __('Home') }}
                     </x-nav-link>
                 </div>
+<div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('blog.personal')" :active="request()->routeIs('blog.personal')">
+                        {{ __('Yours Blog') }}
+                    </x-nav-link>
+                </div>
+                
             </div>
 
             <!-- Settings Dropdown -->

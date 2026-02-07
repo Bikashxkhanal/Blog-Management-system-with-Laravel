@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,6 +17,12 @@ class Blog extends Model
         'user_id',
         'status',
     ];
+
+    public function publish(array $data){
+        if(empty($data['title'] ) && empty($data['discription']) && empty($data['user_id'] ) ){throw new Exception('Cannot create blog');};
+
+        Blog::create($data);
+    }
 
     
 }

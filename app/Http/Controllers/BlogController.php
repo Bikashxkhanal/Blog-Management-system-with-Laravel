@@ -3,22 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
-use App\Services\BlogServices;
+// use App\Services\BlogServices;
+use App\Policies\BlogPolicy;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    private BlogServices $blogService;
+   private $blogPolicy;
 
-    public function __construct(BlogServices $service){
-        $this->blogService = $service;
+    public function __construct(BlogPolicy $policy){
+        $this->blogPolicy = $policy;
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view('blog.index', ['user' => request()->user()]);
     }
 
     /**
@@ -26,7 +27,13 @@ class BlogController extends Controller
      */
     public function create()
     {
-        
+    $status =  $this->blogPolicy->create(request()->user());
+    if($status === false){
+            return redirect('/blog', 403);
+    }
+    return view('blog.create');
+
+     
     }
 
     /**
@@ -34,7 +41,7 @@ class BlogController extends Controller
      */
     public function store(Request $request)
     {
-        $this->blogService->createBlog($request->all());
+      
     }
 
     /**
@@ -42,7 +49,7 @@ class BlogController extends Controller
      */
     public function show(Blog $blog)
     {
-        //
+         return view('blog.show', ['blog' => $blog]);
     }
 
     /**

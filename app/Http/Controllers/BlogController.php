@@ -22,15 +22,16 @@ class BlogController extends Controller
     $user = request()->user(); // currently logged-in user
 
     // Start the query with eager loading
-    $query = Blog::with('user')->orderBy('created_at', 'desc');
+    $query = Blog::with('user');
 
     // Filter: normal users see only active blogs
     if ($user->role !== 'admin') {
         $query->where('status', 'active'); // assuming 'active' is the value for active blogs
     }
+    $query->orderBy('created_at', 'desc')->orderBy('id', 'desc');
 
     // Paginate the results
-    $blogs = $query->paginate(7);
+    $blogs = $query->paginate(6);
 
     // Return view
     return view('blog.index', [
@@ -122,7 +123,7 @@ class BlogController extends Controller
 
     
     $blog->update($validatedData);
-
+    
     return to_route('blog.show', $blog)->with('message', 'Blog updated successfully!');
 }
 
@@ -139,8 +140,9 @@ class BlogController extends Controller
      }
     $blog->delete();
 
-    return to_route('blog.personal')->with('message', "Blog deleted successfully");
-
+   return redirect()
+        ->route('blog.index')
+        ->with('success', 'Blog deleted successfully');
     }
 
     public function personal(){

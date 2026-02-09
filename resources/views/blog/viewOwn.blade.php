@@ -1,5 +1,11 @@
 <x-app-layout>
     <div class="max-w-7xl mx-auto px-6 py-10">
+        @if (session('message'))
+    <div class="mb-4 rounded bg-green-100 px-4 py-3 text-green-800">
+        {{ session('message') }}
+    </div>
+@endif
+
         {{-- Blog Grid --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($blogs as $blog)

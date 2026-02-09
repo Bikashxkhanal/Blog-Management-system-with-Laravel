@@ -99,14 +99,13 @@ class BlogController extends Controller
      */
     public function update(Request $request, Blog $blog)
 {
-    // 1️⃣ Validate the request
+    
     $validatedData = $request->validate([
         'title' => 'required|string|max:255',
         'discription' => 'required|string',
         'blog_img' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
     ]);
 
-    // 2️⃣ Handle image upload if a new image is provided
     if ($request->hasFile('blog_img')) {
         // Delete old image if exists
         if ($blog->img_path && file_exists(public_path('uploads/blog_imgs/' . $blog->img_path))) {
@@ -118,13 +117,12 @@ class BlogController extends Controller
         $validatedData['img_path'] = $imageName;
     }
 
-    // 3️⃣ Keep the user_id unchanged (optional if you want to update it)
+
     $validatedData['user_id'] = $blog->user_id;
 
-    // 4️⃣ Update the existing blog
+    
     $blog->update($validatedData);
 
-    // 5️⃣ Redirect to the show page
     return to_route('blog.show', $blog)->with('message', 'Blog updated successfully!');
 }
 
@@ -134,7 +132,15 @@ class BlogController extends Controller
      */
     public function destroy(Blog $blog)
     {
-        //
+       $user =  request()->user();
+     $status =   $this->blogPolicy->delete($user, $blog);
+     if($status === false){
+        abort(403, "Unauthorized action");
+     }
+    $blog->delete();
+
+    return to_route('blog.personal')->with('message', "Blog deleted successfully");
+
     }
 
     public function personal(){

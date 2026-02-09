@@ -1,5 +1,10 @@
 <x-app-layout>
     <div class="max-w-3xl mx-auto mt-10 bg-white rounded-2xl shadow-lg overflow-hidden">
+          @if (session('message'))
+    <div class="mb-4 rounded bg-green-100 px-4 py-3 text-green-800">
+        {{ session('message') }}
+    </div>
+@endif
         {{-- Blog Image --}}
         @if($blog->img_path)
             <div class="w-full py-6 flex justify-center">
@@ -59,3 +64,4 @@
         </div>
     </div>
 </x-app-layout>
+

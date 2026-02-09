@@ -31,6 +31,13 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Password123@'),
         ]);
         
+        User::factory()->create([
+            'id' => 3,
+            'name' => 'Test User 2',
+            'email' => 'admin@example2.com',
+            'role' => 'admin',
+            'password' => Hash::make('Password123@'),
+        ]);
         Blog::factory(80)->create();
     }
 }
